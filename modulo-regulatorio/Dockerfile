@@ -1,11 +1,11 @@
-# Etapa 1: Construcción
+# Etapa 1: Construcción del .jar
 FROM maven:3.9.4-eclipse-temurin-17 AS build
 WORKDIR /app
 COPY . .
 RUN mvn clean package -DskipTests
 
-# Etapa 2: Ejecución
+# Etapa 2: Contenedor ligero de ejecución
 FROM eclipse-temurin:17-jdk
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
-ENTRYPOINT ["java", "-Xmx256m", "-Xms128m", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
